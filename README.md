@@ -1,10 +1,10 @@
 # Maids of Honour Platform
 
-> 🚧 **UNDER ACTIVE DEVELOPMENT** - This platform is currently in active development. APIs and features may change.
+> **UNDER ACTIVE DEVELOPMENT** - This platform is currently in active development. APIs and features may change.
 
 An AI-powered platform for vetting, training, and placing domestic service providers in Kenya. The platform ensures safety and quality through comprehensive verification, automated training, and secure payment processing.
 
-## 🌟 Features
+## Features
 
 ### For Service Providers
 
@@ -33,7 +33,7 @@ An AI-powered platform for vetting, training, and placing domestic service provi
 - **Payment Processing** - SasaPay integration for C2B and B2C payments
 - **Real-time Notifications** - WhatsApp, SMS, email, and push notifications
 
-## 🏗️ Architecture
+## Architecture
 
 ```
 maidsofhonour/
@@ -69,7 +69,7 @@ maidsofhonour/
 - **Video:** Mux for training content
 - **Monitoring:** Sentry
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 
@@ -131,7 +131,7 @@ npm install
 npx expo start
 ```
 
-## 🔧 Configuration
+## Configuration
 
 Create a `.env` file in the `backend/` directory with the following variables:
 
@@ -169,13 +169,13 @@ SENTRY_DSN=your-sentry-dsn
 
 See `backend/.env.example` for complete configuration options.
 
-## 📚 Documentation
+## Documentation
 
 - **API Documentation:** See `backend/README.md`
 - **Database Schema:** 48 tables documented in `backend/src/db/schema.ts`
 - **Mobile App:** See `mobileapp/README.md`
 
-## 🧪 Testing
+## Testing
 
 ```bash
 # Backend tests
@@ -189,7 +189,7 @@ npm test auth.service.test
 npm run test:coverage
 ```
 
-## 🛡️ Security
+## Security
 
 - **JWT Authentication** with bcrypt password hashing
 - **Rate Limiting** on all endpoints
@@ -200,11 +200,11 @@ npm run test:coverage
 - **SQL Injection Protection** via Drizzle ORM
 - **XSS Protection** with sanitization
 
-## 🤝 Contributing
+## Contributing
 
 This is currently a private development project. Contributions are not being accepted at this time.
 
-## 📋 Development Status
+## Development Status
 
 **Current Phase:** Alpha Development
 
@@ -235,11 +235,11 @@ This is currently a private development project. Contributions are not being acc
 - 📅 Real-time chat
 - 📅 Production deployment
 
-## 📄 License
+## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 🌍 About
+## About
 
 Maids of Honour is building Africa's most trusted platform for domestic service placement, combining AI technology with rigorous verification to ensure safety and quality for both service providers and clients.
 
