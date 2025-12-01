@@ -1,0 +1,65 @@
+# Session continuation files
+2025-*-this-session-is-being-continued-*.txt
+
+# Old/backup files
+old.*.txt
+*.old
+*.bak
+*.backup
+
+# MCP old configs
+old.mcp.json.txt
+
+# Context/documentation temp files
+context/moha-app-documents/
+context/mux-docs-links.txt
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Proprietary files (business context, implementation details)
+.no-push/
+.ai_agents_knowledgebase/
+
+# Environment variables - comprehensive exclusions
+.env
+.env.local
+.env.*.local
+.env.test
+.env.production
+.env.development
+!.env.example
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Build outputs
+dist/
+build/
+*.tsbuildinfo
+
+# Dependencies
+node_modules/
+
+# Test coverage
+coverage/
+.nyc_output/
+
+# Temporary files
+tmp/
+temp/
+*.tmp

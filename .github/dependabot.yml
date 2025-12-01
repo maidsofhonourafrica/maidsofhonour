@@ -1,0 +1,76 @@
+# Dependabot configuration for automated dependency updates
+# Monitors npm packages for security vulnerabilities and version updates
+
+version: 2
+updates:
+  # Backend dependencies
+  - package-ecosystem: "npm"
+    directory: "/backend"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "Africa/Nairobi"
+    open-pull-requests-limit: 10
+    reviewers:
+      - "Ngenome"
+    labels:
+      - "dependencies"
+      - "backend"
+    commit-message:
+      prefix: "deps"
+      include: "scope"
+    # Group all patch updates together
+    groups:
+      patch-updates:
+        patterns:
+          - "*"
+        update-types:
+          - "patch"
+      security-updates:
+        patterns:
+          - "*"
+        dependency-type: "production"
+    # Allow both direct and indirect updates
+    versioning-strategy: increase
+    # Ignore specific dependencies if needed
+    ignore:
+      # Example: pin a specific version
+      # - dependency-name: "fastify"
+      #   versions: ["4.x"]
+
+  # Mobile app dependencies
+  - package-ecosystem: "npm"
+    directory: "/mobileapp"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "Africa/Nairobi"
+    open-pull-requests-limit: 10
+    reviewers:
+      - "Ngenome"
+    labels:
+      - "dependencies"
+      - "mobile"
+    commit-message:
+      prefix: "deps"
+      include: "scope"
+    groups:
+      patch-updates:
+        patterns:
+          - "*"
+        update-types:
+          - "patch"
+
+  # GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "Africa/Nairobi"
+    labels:
+      - "dependencies"
+      - "github-actions"
