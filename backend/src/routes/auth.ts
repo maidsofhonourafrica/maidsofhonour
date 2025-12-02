@@ -116,4 +116,62 @@ export async function authRoutes(fastify: FastifyInstance) {
       }
     }
   );
+
+  // Send OTP
+  fastify.post(
+    '/otp/send',
+    {
+      schema: {
+        description: 'Send OTP to user via SMS or email',
+        tags: ['Authentication'],
+        body: z.object({
+          identifier: z.string(),
+          type: z.enum(['login', 'register']),
+          role: z.string().optional(),
+        }),
+        response: {
+          200: z.object({ message: z.string() }),
+          400: errorResponseSchema,
+        },
+      },
+    },
+    async (request, reply) => {
+      try {
+        const result = await authService.sendOtp(request.body as any);
+        return reply.send(result);
+      } catch (error: unknown) {
+        const err = error as Error;
+        return reply.code(400).send({ error: err.message });
+      }
+    }
+  );
+
+  // Verify OTP
+  fastify.post(
+    '/otp/verify',
+    {
+      schema: {
+        description: 'Verify OTP and complete authentication',
+        tags: ['Authentication'],
+        body: z.object({
+          identifier: z.string(),
+          code: z.string(),
+          role: z.string().optional(),
+        }),
+        response: {
+          200: authResponseSchema,
+          400: errorResponseSchema,
+        },
+      },
+    },
+    async (request, reply) => {
+      try {
+        const result = await authService.verifyOtp(request.body as any);
+        return reply.send(result);
+      } catch (error: unknown) {
+        const err = error as Error;
+        return reply.code(400).send({ error: err.message });
+      }
+    }
+  );
 }
