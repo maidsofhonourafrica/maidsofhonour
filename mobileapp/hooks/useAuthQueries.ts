@@ -1,6 +1,6 @@
 import { useMutation } from '@tanstack/react-query';
 import apiClient from '@/api/client';
-import { useAuth } from '@/context/AuthContext';
+import { useSession } from '@/context/SessionContext';
 import { Alert } from 'react-native';
 
 type SendOtpParams = {
@@ -39,7 +39,7 @@ export const useSendOtp = () => {
 };
 
 export const useVerifyOtp = () => {
-  const { signIn } = useAuth();
+  const { signIn } = useSession();
 
   return useMutation({
     mutationFn: async (data: VerifyOtpParams) => {
@@ -47,7 +47,8 @@ export const useVerifyOtp = () => {
       return response.data;
     },
     onSuccess: async (data) => {
-      await signIn(data.token, data.user);
+      // Use the SessionProvider's signIn method
+      signIn(data.token, data.user);
     },
     onError: (error: any) => {
       console.error('Verify OTP Error:', error);

@@ -8,14 +8,8 @@ import '../global.css';
 import 'react-native-reanimated';
 
 import { useColorScheme } from '@/components/useColorScheme';
-
-export {
-  // Catch any errors thrown by the Layout component.
-  ErrorBoundary,
-} from 'expo-router';
-
-// Prevent the splash screen from auto-hiding before asset loading is complete.
-SplashScreen.preventAutoHideAsync();
+import { SessionProvider, useSession } from '@/context/SessionContext';
+import { SplashScreenController } from '@/components/SplashScreenController';
 
 import {
   Outfit_300Light,
@@ -25,29 +19,23 @@ import {
   Outfit_700Bold,
 } from '@expo-google-fonts/outfit';
 import * as Sentry from '@sentry/react-native';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 Sentry.init({
   dsn: 'https://51e5c967bfbde641eb26778f3d2fc9d5@o4509707972050944.ingest.us.sentry.io/4510451048185856',
-
-  // Adds more context data to events (IP address, cookies, user, etc.)
-  // For more information, visit: https://docs.sentry.io/platforms/react-native/data-management/data-collected/
   sendDefaultPii: true,
-
-  // Enable Logs
   enableLogs: true,
-
-  // Configure Session Replay
   replaysSessionSampleRate: 0.1,
   replaysOnErrorSampleRate: 1,
   integrations: [Sentry.mobileReplayIntegration(), Sentry.feedbackIntegration()],
-
-  // uncomment the line below to enable Spotlight (https://spotlightjs.com)
-  // spotlight: __DEV__,
 });
 
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { AuthProvider } from '@/context/AuthContext';
-import { useProtectedRoute } from '@/hooks/useProtectedRoute';
+export {
+  ErrorBoundary,
+} from 'expo-router';
+
+// Prevent the splash screen from auto-hiding before asset loading is complete.
+SplashScreen.preventAutoHideAsync();
 
 const queryClient = new QueryClient();
 
@@ -79,23 +67,33 @@ export default Sentry.wrap(function RootLayout() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <AuthProvider>
-        <RootLayoutNav />
-      </AuthProvider>
+      <SessionProvider>
+        <SplashScreenController />
+        <RootNavigator />
+      </SessionProvider>
     </QueryClientProvider>
   );
 });
 
-function RootLayoutNav() {
+function RootNavigator() {
   const colorScheme = useColorScheme();
-  useProtectedRoute();
+  const { session, user } = useSession();
 
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <Stack screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="(auth)" />
-        <Stack.Screen name="(client)" />
-        <Stack.Screen name="(sp)" />
+        {/* Protected routes - require authentication */}
+        <Stack.Protected guard={!!session && !!user}>
+          <Stack.Screen name="(client)" />
+          <Stack.Screen name="(sp)" />
+        </Stack.Protected>
+
+        {/* Unprotected routes - accessible without authentication */}
+        <Stack.Protected guard={!session || !user}>
+          <Stack.Screen name="(auth)" />
+        </Stack.Protected>
+
+        {/* Modal routes - always accessible */}
         <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
       </Stack>
     </ThemeProvider>

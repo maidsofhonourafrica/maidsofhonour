@@ -14,11 +14,10 @@ const apiClient = axios.create({
   },
 });
 
-// Request interceptor to add auth token
 apiClient.interceptors.request.use(
   async (config) => {
     try {
-      const token = await SecureStore.getItemAsync('auth_token');
+      const token = await SecureStore.getItemAsync('session');
       if (token) {
         config.headers.Authorization = `Bearer ${token}`;
       }
