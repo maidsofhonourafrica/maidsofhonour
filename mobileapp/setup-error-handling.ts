@@ -3,7 +3,7 @@
 
 const originalConsoleError = console.error;
 // Use host.docker.internal when running in Docker, or your local IP when developing
-const DEV_MACHINE_URL = 'http://host.docker.internal:3001/log-error'; // Works from Docker containers
+const DEV_MACHINE_URL = 'http://host.docker.internal:7283/log-error';
 
 console.error = (...args: any[]) => {
   // 1. Call the original console.error so it still prints to Metro terminal

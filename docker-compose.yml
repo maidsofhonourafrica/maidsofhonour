@@ -80,11 +80,11 @@ services:
     container_name: moh-error-logger
     restart: unless-stopped
     ports:
-      - "3001:3001"
+      - "7283:7283"
     volumes:
       - ./mobileapp/expo-error.log:/app/expo-error.log
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3001/health"]
+      test: ["CMD", "curl", "-f", "http://localhost:7283/health"]
       interval: 30s
       timeout: 10s
       retries: 3
