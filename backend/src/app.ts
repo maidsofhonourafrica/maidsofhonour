@@ -294,10 +294,6 @@ export async function buildApp() {
   await fastify.register(adminVettingRoutes);
   await fastify.register(vettingCallbackRoutes);
 
-  // Legacy routes (for backwards compatibility - will be deprecated)
-  await fastify.register(authRoutes, { prefix: '/api/auth' });
-  await fastify.register(paymentRoutes, { prefix: '/api/payments' });
-  await fastify.register(sasapayCallbackRoutes, { prefix: '/api/sasapay' });
 
   // Register Escrow routes
   await fastify.register(escrowRoutes, { prefix: '/api/escrow' });
