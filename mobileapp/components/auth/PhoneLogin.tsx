@@ -8,9 +8,10 @@ import { router } from 'expo-router';
 
 type Props = {
   role: string;
+  onSwitchToEmail: () => void;
 };
 
-export default function PhoneLogin({ role }: Props) {
+export default function PhoneLogin({ role, onSwitchToEmail }: Props) {
   const colorScheme = useColorScheme();
   const [phoneNumber, setPhoneNumber] = useState('');
   
@@ -65,6 +66,25 @@ export default function PhoneLogin({ role }: Props) {
         <Text className="text-muted-foreground mb-8 font-sans">
           Enter your phone number to continue as a {role || 'user'}.
         </Text>
+        
+        {/* Method Toggle */}
+        <View className="flex-row bg-muted p-1 rounded-xl mb-6">
+          <TouchableOpacity 
+            className="flex-1 py-2 rounded-lg items-center bg-card"
+          >
+            <Text className="font-bold font-sans text-foreground">
+              Phone
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity 
+            onPress={onSwitchToEmail}
+            className="flex-1 py-2 rounded-lg items-center"
+          >
+            <Text className="font-bold font-sans text-muted-foreground">
+              Email
+            </Text>
+          </TouchableOpacity>
+        </View>
 
         <Text className="text-xs font-bold text-muted-foreground mb-2 uppercase tracking-wide font-sans">
           Phone Number
