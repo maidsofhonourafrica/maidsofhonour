@@ -21,7 +21,7 @@ export default function RoleSelection() {
           {/* Client Card */}
           <TouchableOpacity 
             onPress={() => router.push('/(auth)/login?role=client')}
-            className="bg-card p-6 rounded-3xl shadow-sm border-2 border-transparent active:border-primary"
+            className="bg-card p-6 rounded-3xl border-2 border-transparent active:border-primary"
           >
             <View className="w-14 h-14 bg-primary/10 rounded-2xl items-center justify-center mb-4">
                <Feather name="home" size={24} color={Colors.light.primary} />
@@ -33,7 +33,7 @@ export default function RoleSelection() {
           {/* SP Card */}
           <TouchableOpacity 
             onPress={() => router.push('/(auth)/login?role=service_provider')}
-            className="bg-card p-6 rounded-3xl shadow-sm border-2 border-transparent active:border-primary"
+            className="bg-card p-6 rounded-3xl border-2 border-transparent active:border-primary"
           >
             <View className="w-14 h-14 bg-purple-100 dark:bg-purple-900/30 rounded-2xl items-center justify-center mb-4">
                <Feather name="briefcase" size={24} color="#9333ea" />

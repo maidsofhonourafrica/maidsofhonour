@@ -92,7 +92,7 @@ export default function OTP() {
         <TouchableOpacity 
           onPress={handleVerify}
           disabled={loading}
-          className={`w-full bg-primary py-4 rounded-xl shadow-lg shadow-primary/30 mb-6 items-center ${loading ? 'opacity-70' : ''}`}
+          className={`w-full bg-primary py-4 rounded-xl mb-6 items-center ${loading ? 'opacity-70' : ''}`}
         >
           {loading ? (
             <ActivityIndicator color="white" />

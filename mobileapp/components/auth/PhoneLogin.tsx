@@ -88,7 +88,7 @@ export default function PhoneLogin({ role }: Props) {
         <TouchableOpacity 
           onPress={handleContinue}
           disabled={loading}
-          className={`w-full bg-primary py-4 rounded-xl shadow-lg shadow-primary/30 mb-6 items-center ${loading ? 'opacity-70' : ''}`}
+          className={`w-full bg-primary py-4 rounded-xl mb-6 items-center ${loading ? 'opacity-70' : ''}`}
         >
           {loading ? (
             <ActivityIndicator color="white" />

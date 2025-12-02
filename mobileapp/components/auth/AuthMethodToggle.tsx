@@ -13,7 +13,7 @@ export default function AuthMethodToggle({ currentMethod, onMethodChange }: Prop
       <View className="flex-row bg-muted p-1 rounded-xl">
         <TouchableOpacity 
           onPress={() => onMethodChange('phone')}
-          className={`flex-1 py-2 rounded-lg items-center ${currentMethod === 'phone' ? 'bg-card shadow-sm' : ''}`}
+          className={`flex-1 py-2 rounded-lg items-center ${currentMethod === 'phone' ? 'bg-card' : ''}`}
         >
           <Text className={`font-bold font-sans ${currentMethod === 'phone' ? 'text-foreground' : 'text-muted-foreground'}`}>
             Phone
@@ -21,7 +21,7 @@ export default function AuthMethodToggle({ currentMethod, onMethodChange }: Prop
         </TouchableOpacity>
         <TouchableOpacity 
           onPress={() => onMethodChange('email')}
-          className={`flex-1 py-2 rounded-lg items-center ${currentMethod === 'email' ? 'bg-card shadow-sm' : ''}`}
+          className={`flex-1 py-2 rounded-lg items-center ${currentMethod === 'email' ? 'bg-card' : ''}`}
         >
           <Text className={`font-bold font-sans ${currentMethod === 'email' ? 'text-foreground' : 'text-muted-foreground'}`}>
             Email
