@@ -2,7 +2,8 @@
 // Logs errors to the development machine where you're running the app
 
 const originalConsoleError = console.error;
-const DEV_MACHINE_URL = 'http://192.168.0.101:3001/log-error'; // Update with your machine's IP
+// Use host.docker.internal when running in Docker, or your local IP when developing
+const DEV_MACHINE_URL = 'http://host.docker.internal:3001/log-error'; // Works from Docker containers
 
 console.error = (...args: any[]) => {
   // 1. Call the original console.error so it still prints to Metro terminal
