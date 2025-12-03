@@ -30,7 +30,7 @@ services:
       - "6379:6379"
     volumes:
       - redis_data:/data
-      - ./backend/docker/redis/redis.conf:/usr/local/etc/redis/redis.conf:ro
+      - ./apps/server/docker/redis/redis.conf:/usr/local/etc/redis/redis.conf:ro
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
       interval: 10s
@@ -75,14 +75,14 @@ services:
   # Error Logging Service (for mobile app errors)
   error-logger:
     build:
-      context: ./mobileapp
+      context: ./apps/mobile
       dockerfile: Dockerfile.error-logger
     container_name: moh-error-logger
     restart: unless-stopped
     ports:
       - "7283:7283"
     volumes:
-      - ./mobileapp/expo-error.log:/app/expo-error.log
+      - ./apps/mobile/expo-error.log:/app/expo-error.log
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:7283/health"]
       interval: 30s

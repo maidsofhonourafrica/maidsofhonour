@@ -1,0 +1,14 @@
+{
+  "name": "maidsofhonor-monorepo",
+  "private": true,
+  "scripts": {
+    "dev:server": "pnpm --filter @project/server dev",
+    "dev:web": "pnpm --filter @project/web dev",
+    "dev:mobile": "pnpm --filter @project/mobile start",
+    "build": "pnpm -r build",
+    "test": "pnpm -r test"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.3"
+  }
+}

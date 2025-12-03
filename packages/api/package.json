@@ -1,0 +1,21 @@
+{
+  "name": "@project/api",
+  "version": "1.0.0",
+  "description": "Shared API types, schemas, and tRPC router types",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "clean": "rm -rf dist",
+    "type-check": "tsc --noEmit"
+  },
+  "keywords": ["api", "trpc", "schemas", "validation"],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "zod": "^4.1.13"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3"
+  }
+}
