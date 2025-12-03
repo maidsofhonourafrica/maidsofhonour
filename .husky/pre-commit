@@ -1,6 +1,71 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-# Run linting, formatting, and type checking before commit
-cd backend
-npm run lint && npm run format:check && npm run type-check
+echo "🔒 Running pre-commit security checks..."
+
+# Check for .no-push directory
+if git diff --cached --name-only | grep -q "^\.no-push/"; then
+  echo "❌ ERROR: Attempting to commit files from .no-push directory!"
+  echo "Files in .no-push should never be committed."
+  exit 1
+fi
+
+# Check for .ai_agents_knowledgebase directory
+if git diff --cached --name-only | grep -q "^\.ai_agents_knowledgebase/"; then
+  echo "❌ ERROR: Attempting to commit files from .ai_agents_knowledgebase directory!"
+  echo "This directory contains proprietary information and should not be committed."
+  exit 1
+fi
+
+# Check for .env files (except .env.example)
+if git diff --cached --name-only | grep -E "\.env$|\.env\..*" | grep -v "\.env\.example"; then
+  echo "❌ ERROR: Attempting to commit .env files!"
+  echo "Environment files contain secrets and should never be committed."
+  echo "Use .env.example for templates."
+  exit 1
+fi
+
+# Check for common secret patterns in staged files
+echo "🔍 Scanning for potential secrets..."
+
+# Get list of staged files (text files only)
+STAGED_FILES=$(git diff --cached --name-only --diff-filter=ACM | grep -E '\.(ts|tsx|js|jsx|json|yaml|yml|md|txt|sh)$' || true)
+
+if [ -n "$STAGED_FILES" ]; then
+  # Check for common secret patterns
+  SECRET_PATTERNS=(
+    "password\s*=\s*['\"][^'\"]{8,}"
+    "api[_-]?key\s*=\s*['\"][^'\"]{20,}"
+    "secret\s*=\s*['\"][^'\"]{20,}"
+    "token\s*=\s*['\"][^'\"]{20,}"
+    "AUTH_TOKEN\s*=\s*['\"][^'\"]{20,}"
+    "PRIVATE_KEY"
+    "-----BEGIN.*PRIVATE KEY-----"
+    "AWS_SECRET_ACCESS_KEY\s*=\s*['\"][^'\"]+"
+    "ENCRYPTION_MASTER_KEY\s*=\s*['\"][^'\"]+"
+    "SASAPAY_CLIENT_SECRET\s*=\s*['\"][^'\"]+"
+    "WHATSAPP_ACCESS_TOKEN\s*=\s*['\"][^'\"]+"
+  )
+
+  for pattern in "${SECRET_PATTERNS[@]}"; do
+    if echo "$STAGED_FILES" | xargs git diff --cached | grep -iE "$pattern" | grep -v "your-.*-here" | grep -v "example" | grep -v "placeholder"; then
+      echo "❌ ERROR: Potential secret detected!"
+      echo "Pattern: $pattern"
+      echo "Please remove secrets and use environment variables or placeholders."
+      exit 1
+    fi
+  done
+fi
+
+echo "✅ Security checks passed!"
+
+# Run type checking for TypeScript projects
+echo "🔍 Running type checks..."
+if [ -f "tsconfig.json" ]; then
+  npx tsc --noEmit || {
+    echo "❌ TypeScript errors found. Please fix before committing."
+    exit 1
+  }
+fi
+
+echo "✅ All pre-commit checks passed!"

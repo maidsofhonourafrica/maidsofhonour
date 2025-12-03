@@ -35,29 +35,38 @@ An AI-powered platform for vetting, training, and placing domestic service provi
 
 ## Architecture
 
+This is a **monorepo** managed with **pnpm workspaces**, containing multiple applications and shared packages.
+
 ```
-maidsofhonour/
-├── backend/          # Node.js + Express + PostgreSQL API
-├── mobileapp/        # React Native (Expo) mobile app
-├── frontend/         # Web application (future)
-└── docker-compose.yml
+newapps/
+├── apps/
+│   ├── mobile/          # React Native (Expo) mobile app
+│   ├── server/          # Node.js + Express + tRPC backend
+│   └── web/             # Admin web application
+├── packages/
+│   ├── api/             # Shared tRPC API definitions
+│   └── ...              # Other shared packages
+├── tsconfig.json        # Root TypeScript project references
+└── pnpm-workspace.yaml  # Monorepo workspace configuration
 ```
 
 ### Tech Stack
 
 **Backend:**
 
-- Node.js + Express + TypeScript
-- PostgreSQL + Drizzle ORM (48 tables)
-- Redis (caching, queues, rate limiting)
-- JWT authentication
+- **Node.js + Express + TypeScript**
+- **tRPC** - End-to-end typesafe APIs with full TypeScript inference
+- **PostgreSQL + Drizzle ORM** (48 tables)
+- **Redis** (caching, queues, rate limiting)
+- **JWT authentication**
+- **SuperJSON** for enhanced serialization (Date, Map, Set, etc.)
 - Comprehensive test suite (Vitest)
 
 **Mobile App:**
 
-- React Native + Expo
-- NativeWind (Tailwind CSS)
-- React Query for state management
+- **React Native + Expo**
+- **tRPC React Query** - Type-safe API calls with automatic React Query integration
+- **NativeWind** (Tailwind CSS for React Native)
 - Cross-platform (iOS, Android, Web)
 
 **Integrations:**
@@ -73,34 +82,48 @@ maidsofhonour/
 
 ### Prerequisites
 
-- Node.js 18+ and npm
-- PostgreSQL 14+
-- Redis 7+
-- Docker & Docker Compose (optional)
+- **Node.js 18+** and **pnpm** (for monorepo management)
+- **PostgreSQL 14+**
+- **Redis 7+**
+- **Docker & Docker Compose** (optional)
 
-### Quick Start with Docker
+Install pnpm if you haven't already:
+
+```bash
+npm install -g pnpm
+```
+
+### Quick Start
 
 ```bash
 # Clone the repository
 git clone https://github.com/maidsofhonourafrica/maidsofhonour.git
 cd maidsofhonour
 
-# Start services
-docker-compose up -d
+# Install all dependencies (monorepo-wide)
+pnpm install
 
-# Backend will be available at http://localhost:5300
-# Mobile app at http://localhost:8081
+# Copy environment files (create .env files in apps/server/)
+cp apps/server/.env.example apps/server/.env
+
+# Start development
+./dev.sh  # Starts all apps concurrently
 ```
 
 ### Manual Setup
 
-#### Backend Setup
+#### 1. Install Dependencies
 
 ```bash
-cd backend
+# Install all dependencies for all workspaces
+pnpm install
+```
 
-# Install dependencies
-npm install
+#### 2. Backend/Server Setup
+
+```bash
+# Navigate to server app
+cd apps/server
 
 # Copy environment file
 cp .env.example .env
@@ -110,26 +133,47 @@ openssl rand -base64 32  # Add to .env as JWT_SECRET
 openssl rand -hex 32     # Add to .env as ENCRYPTION_MASTER_KEY
 
 # Set up database
-npm run db:push
+pnpm db:push
 
 # Run migrations
-npm run db:migrate
+pnpm db:migrate
 
 # Start development server
-npm run dev
+pnpm dev
 ```
 
-#### Mobile App Setup
+#### 3. Mobile App Setup
 
 ```bash
-cd mobileapp
-
-# Install dependencies
-npm install
+# Navigate to mobile app (from root)
+cd apps/mobile
 
 # Start Expo
-npx expo start
+pnpm start
 ```
+
+### Using tRPC
+
+The mobile app communicates with the server via **tRPC**, providing end-to-end type safety:
+
+```typescript
+// In mobile app - fully typed API calls
+import { trpc } from "@/lib/trpc";
+
+// Login with full TypeScript inference
+const loginMutation = trpc.auth.login.useMutation({
+  onSuccess: (data) => {
+    console.log(data.token); // ✅ Fully typed!
+  },
+});
+
+loginMutation.mutate({
+  phoneNumber: "+254712345678",
+  password: "password123",
+});
+```
+
+The tRPC router is defined in `apps/server/src/trpc/router.ts` and automatically provides types to the mobile app.
 
 ## Configuration
 
